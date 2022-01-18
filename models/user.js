@@ -19,7 +19,7 @@ const User = db.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {min: 5}
-    },
-});
+    }
+})
 
-module.exports = User;
+module.exports = User

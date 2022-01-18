@@ -1,21 +1,23 @@
-const Express = require('express');
+require("dotenv").config()
+const Express = require("express")
 const app = Express();
-const dbConnection = require('./db');
+const dbConnection = require("./db")
 
-app.use(Express.json());
+const controllers = require("./controllers")
 
-const controllers = require('./controllers');
+app.use(Express.json())
+app.use(require('./middleware/headers'))
 
-app.use('/workout', controllers.workoutController);
+app.use('/workout', controllers.workoutController)
 app.use('/user', controllers.userController)
 
 dbConnection.authenticate()
-    .then(() => dbConnection.sync())
-    .then(() => {
-        app.listen(3500, () => {
-            console.log(`[Server]: App is listening on 3500.`);
-        });
+.then(() => dbConnection.sync())
+.then(() => {
+    app.listen(process.env.PORT, () => {
+        console.log(`[Server] listening on port ${process.env.PORT}`)
     })
-    .catch((err) => {
-        console.log(`[Server]: Server crashed. Error = ${err}`);
-    });
+})
+.catch((err) => {
+    console.log(`[server] has crashed: ${err}`)
+})
